@@ -5,23 +5,23 @@ import {
   searchTracks,
   getTracksByIds,
   type TrackSearchParams,
-} from "../spotify/api.ts";
+} from "../spotify/api";
 import {
   resolveFirstPlayable,
   searchItunesCatalog,
   type ItunesMatch,
   type ItunesTrack,
-} from "../spotify/itunes.ts";
+} from "../spotify/itunes";
 import {
   shuffle,
   pickRandom,
   releaseYearOf,
   normalizeYear,
   isCorrectGuess,
-} from "../game/logic.ts";
-import { createRound, getRound, deleteRound } from "../game/store.ts";
-import { FALLBACK_TRACK_IDS } from "../game/fallback.ts";
-import type { GameRound, GenerateResponse, SpotifyTrack } from "../types.ts";
+} from "../game/logic";
+import { createRound, getRound, deleteRound } from "../game/store";
+import { FALLBACK_TRACK_IDS } from "../game/fallback";
+import type { GameRound, GenerateResponse, SpotifyTrack } from "../types";
 
 const game = new Hono();
 

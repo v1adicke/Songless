@@ -3,9 +3,9 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { serveStatic } from "hono/bun";
-import { isSpotifyConfigured } from "./spotify/token.ts";
-import gameRoutes from "./routes/game.ts";
-import searchRoutes from "./routes/search.ts";
+import { isSpotifyConfigured } from "./spotify/token";
+import gameRoutes from "./routes/game";
+import searchRoutes from "./routes/search";
 
 const app = new Hono();
 

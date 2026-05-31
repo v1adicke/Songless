@@ -2,7 +2,7 @@
 // Keyed by an opaque round_id so the client never learns the answer
 // until /guess or /reveal. Rounds auto-expire to bound memory usage.
 
-import type { GameRound } from "../types.ts";
+import type { GameRound } from "../types";
 
 const rounds = new Map<string, GameRound>();
 

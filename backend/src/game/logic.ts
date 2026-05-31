@@ -1,6 +1,6 @@
 // Game logic helpers: filter normalization, track selection, answer matching.
 
-import type { SpotifyTrack } from "../types.ts";
+import type { SpotifyTrack } from "../types";
 
 /** Validate & normalize a year/decade filter into Spotify's `year:` value. */
 export function normalizeYear(raw: string | undefined): string | undefined {

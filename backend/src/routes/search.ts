@@ -3,11 +3,11 @@
 // is unavailable (e.g. region-blocked) or returns no results.
 
 import { Hono } from "hono";
-import { searchArtists, searchTracks } from "../spotify/api.ts";
+import { searchArtists, searchTracks } from "../spotify/api";
 import {
   searchItunesArtists,
   searchItunesTracks,
-} from "../spotify/itunes.ts";
+} from "../spotify/itunes";
 
 const search = new Hono();
 

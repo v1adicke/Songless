@@ -1,12 +1,12 @@
 // Thin wrapper around the Spotify Web API.
 // Handles auth headers, retries once on 401, and exposes typed search helpers.
 
-import { getAccessToken, invalidateToken, isSpotifyConfigured } from "./token.ts";
+import { getAccessToken, invalidateToken, isSpotifyConfigured } from "./token";
 import type {
   SpotifyArtist,
   SpotifySearchResponse,
   SpotifyTrack,
-} from "../types.ts";
+} from "../types";
 
 const API_BASE = "https://api.spotify.com/v1";
 
