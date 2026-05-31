@@ -52,6 +52,9 @@ export function useGame() {
   // Ensures the reveal/lose transition fires at most once per round
   // (guards against React StrictMode double-invocation in dev).
   const resolvedRound = useRef<string | null>(null);
+  // Always-current ref so async callbacks never read stale closure state.
+  const stateRef = useRef<GameState>(initialState);
+  stateRef.current = state;
 
   const currentLimit = UNLOCK_SECONDS[Math.min(state.attempt, MAX_ATTEMPTS - 1)];
 
@@ -106,8 +109,10 @@ export function useGame() {
 
   const submitGuess = useCallback(
     async (candidate: TrackCandidate) => {
-      if (state.phase !== "playing" || state.busy || !state.roundId) return;
-      const roundId = state.roundId;
+      // Read from ref — never stale, even in async callbacks or rapid clicks.
+      const s0 = stateRef.current;
+      if (s0.phase !== "playing" || s0.busy || !s0.roundId) return;
+      const roundId = s0.roundId;
       setState((s) => ({ ...s, busy: true }));
 
       try {
@@ -157,17 +162,18 @@ export function useGame() {
         }));
       }
     },
-    [state.phase, state.busy, state.roundId, loseRound]
+    [loseRound] // no state.* deps — always reads from stateRef
   );
 
   const skip = useCallback(() => {
-    if (state.phase !== "playing" || state.busy || !state.roundId) return;
-    const roundId = state.roundId;
+    const s0 = stateRef.current;
+    if (s0.phase !== "playing" || s0.busy || !s0.roundId) return;
+    const roundId = s0.roundId;
     // On the final attempt, skipping ends the round (reveal) instead of
     // incrementing attempts indefinitely.
-    if (state.attempt + 1 >= MAX_ATTEMPTS) {
+    if (s0.attempt + 1 >= MAX_ATTEMPTS) {
       const guesses = [
-        ...state.guesses,
+        ...s0.guesses,
         { outcome: "skip" as const, label: "Skipped" },
       ];
       while (guesses.length < MAX_ATTEMPTS) {
@@ -184,17 +190,18 @@ export function useGame() {
       ];
       return { ...s, guesses, attempt: s.attempt + 1 };
     });
-  }, [state.phase, state.busy, state.roundId, state.attempt, state.guesses, loseRound]);
+  }, [loseRound]); // no state.* deps — always reads from stateRef
 
   const giveUp = useCallback(() => {
-    if (state.phase !== "playing" || !state.roundId) return;
-    const guesses = [...state.guesses];
+    const s0 = stateRef.current;
+    if (s0.phase !== "playing" || !s0.roundId) return;
+    const guesses = [...s0.guesses];
     // Fill remaining rows as skips for the share grid.
     while (guesses.length < MAX_ATTEMPTS) {
       guesses.push({ outcome: "skip", label: "Skipped" });
     }
-    loseRound(state.roundId, guesses);
-  }, [state.phase, state.roundId, state.guesses, loseRound]);
+    loseRound(s0.roundId, guesses);
+  }, [loseRound]); // no state.* deps — always reads from stateRef
 
   const reset = useCallback(() => {
     resolvedRound.current = null;
