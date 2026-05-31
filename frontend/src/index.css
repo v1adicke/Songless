@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+/* ---- Corporate-noir theme tokens ---- */
+@theme {
+  --color-noir-950: #050506;
+  --color-noir-900: #0a0a0c;
+  --color-noir-850: #0e0e11;
+  --color-noir-800: #141418;
+  --color-noir-700: #1c1c22;
+  --color-noir-600: #2a2a32;
+  --color-noir-500: #3a3a44;
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-line-strong: rgba(255, 255, 255, 0.16);
+  --color-accent: #f5f5f7;
+  --color-accent-dim: #a1a1aa;
+
+  --color-correct: #1db954;
+  --color-close: #d4a72c;
+  --color-wrong: #3a3a44;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-noir-950);
+  color: var(--color-accent);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Ambient gradient backdrop */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(
+      60% 50% at 50% 0%,
+      rgba(80, 80, 110, 0.18) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      40% 40% at 85% 100%,
+      rgba(29, 185, 84, 0.06) 0%,
+      transparent 70%
+    );
+}
+
+/* Thin custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-noir-600);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 245, 247, 0.25);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(245, 245, 247, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 245, 247, 0);
+  }
+}
+
+@keyframes bar-bounce {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.animate-scale-in {
+  animation: scale-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.animate-pulse-ring {
+  animation: pulse-ring 1.8s ease-out infinite;
+}
+
+.eq-bar {
+  transform-origin: bottom;
+  animation: bar-bounce 1s ease-in-out infinite;
+}

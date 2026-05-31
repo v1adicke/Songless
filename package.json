@@ -1,0 +1,19 @@
+{
+  "name": "songless-clone",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently -n backend,frontend -c blue,magenta \"bun run dev:backend\" \"bun run dev:frontend\"",
+    "dev:backend": "cd backend && bun run dev",
+    "dev:frontend": "cd frontend && bun run dev",
+    "build": "cd frontend && bun run build",
+    "start": "cd backend && bun run start"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
