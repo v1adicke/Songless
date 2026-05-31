@@ -17,7 +17,7 @@ export default function App() {
 
   const audio = useAudioSnippet(state.previewUrl, currentLimit);
 
-  // Pause audio whenever the round ends.
+  // Pause snippet audio when the round ends (full track plays on EndScreen).
   useEffect(() => {
     if (state.phase === "won" || state.phase === "lost") {
       audio.pause();
@@ -97,6 +97,12 @@ export default function App() {
               onPause={audio.pause}
             />
 
+            {state.error && (
+              <p className="rounded-lg border border-close/30 bg-close/10 px-3 py-2 text-center text-xs text-close">
+                {state.error}
+              </p>
+            )}
+
             <GuessInput
               busy={state.busy}
               onGuess={submitGuess}
@@ -124,6 +130,7 @@ export default function App() {
           won={state.phase === "won"}
           answer={state.answer}
           guesses={state.guesses}
+          previewUrl={state.previewUrl}
           onPlayAgain={reset}
         />
       )}

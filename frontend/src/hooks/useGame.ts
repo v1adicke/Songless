@@ -29,6 +29,9 @@ interface GameState {
   attempt: number; // 0-based index into UNLOCK_SECONDS
   guesses: GuessEntry[];
   answer: Answer | null;
+  // Cached track info from /generate — used as fallback if /reveal fails
+  // (serverless cold-start can wipe in-memory store between requests).
+  cachedAnswer: Answer | null;
   error: string | null;
   busy: boolean; // guard against concurrent guess/skip submits
 }
@@ -43,6 +46,7 @@ const initialState: GameState = {
   attempt: 0,
   guesses: [],
   answer: null,
+  cachedAnswer: null,
   error: null,
   busy: false,
 };
@@ -63,6 +67,14 @@ export function useGame() {
     setState((s) => ({ ...s, phase: "loading", error: null }));
     try {
       const data = await generateRound(filters);
+      // Cache track info locally — serverless store may expire before /reveal.
+      const cachedAnswer: Answer = {
+        track_id: data.track_cache.track_id,
+        name: data.track_cache.name,
+        artists: data.track_cache.artists,
+        album_image: data.track_cache.album_image,
+        release_year: data.track_cache.release_year,
+      };
       setState({
         ...initialState,
         phase: "playing",
@@ -71,6 +83,7 @@ export function useGame() {
         hintYear: data.hint.release_year,
         hintGenre: data.hint.genre_context,
         usedFallback: data.fallback,
+        cachedAnswer,
       });
     } catch (err) {
       setState((s) => ({
@@ -82,6 +95,8 @@ export function useGame() {
   }, []);
 
   // Resolve the round as lost: reveal the answer from the server.
+  // Falls back to the locally cached track data if /reveal fails
+  // (serverless cold-start can wipe the in-memory store).
   const loseRound = useCallback(
     async (roundId: string, finalGuesses: GuessEntry[]) => {
       if (resolvedRound.current === roundId) return; // already resolving/resolved
@@ -96,9 +111,11 @@ export function useGame() {
           busy: false,
         }));
       } catch {
+        // /reveal failed (round expired on serverless cold-start) — use cache.
         setState((s) => ({
           ...s,
           phase: "lost",
+          answer: s.cachedAnswer,
           guesses: finalGuesses,
           busy: false,
         }));
@@ -126,7 +143,7 @@ export function useGame() {
           setState((s) => ({
             ...s,
             phase: "won",
-            answer: result.answer ?? null,
+            answer: result.answer ?? s.cachedAnswer,
             guesses: [
               ...s.guesses,
               { outcome: "correct", label: candidate.name },

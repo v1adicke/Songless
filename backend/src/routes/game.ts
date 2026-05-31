@@ -123,6 +123,13 @@ game.get("/generate", async (c) => {
         release_year: data.releaseYear,
         genre_context: data.genreContext,
       },
+      track_cache: {
+        track_id: data.trackId,
+        name: data.name,
+        artists: data.artists,
+        album_image: data.albumImage,
+        release_year: data.releaseYear,
+      },
       fallback: usedFallback,
     };
     return c.json(response);

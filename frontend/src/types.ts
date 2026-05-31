@@ -14,6 +14,15 @@ export interface GenerateResponse {
     genre_context: string | null;
   };
   fallback: boolean;
+  // Client-side fallback in case /reveal fails (serverless cold-start).
+  // Must NOT be shown in the UI until the round ends.
+  track_cache: {
+    track_id: string;
+    name: string;
+    artists: string[];
+    album_image: string | null;
+    release_year: string;
+  };
 }
 
 export interface Answer {

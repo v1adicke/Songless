@@ -62,4 +62,14 @@ export interface GenerateResponse {
     release_year: string;
     genre_context: string | null;
   };
+  // Cached track data for client-side fallback when /reveal fails
+  // (serverless cold-start can wipe the in-memory store).
+  // The UI must NOT display this until the round ends.
+  track_cache: {
+    track_id: string;
+    name: string;
+    artists: string[];
+    album_image: string | null;
+    release_year: string;
+  };
 }
