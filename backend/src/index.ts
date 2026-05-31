@@ -1,8 +1,8 @@
-// Backend entrypoint: Hono app on Bun.
+// Backend entrypoint for local Bun dev.
+// На Vercel используется api/index.ts — этот файл там не запускается.
 
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { serveStatic } from "hono/bun";
 import { isSpotifyConfigured } from "./spotify/token";
 import gameRoutes from "./routes/game";
 import searchRoutes from "./routes/search";
@@ -25,10 +25,9 @@ app.get("/api/health", (c) => c.json({ ok: true }));
 app.route("/api/game", gameRoutes);
 app.route("/api/search", searchRoutes);
 
-// In production, serve the built frontend (frontend/dist) as static files.
-// Harmless in dev (the folder simply won't exist).
-app.use("/*", serveStatic({ root: "../frontend/dist" }));
-app.get("/*", serveStatic({ path: "../frontend/dist/index.html" }));
+// В локальном dev статика не нужна (фронт живёт на :5173 с Vite).
+// serveStatic из hono/bun намеренно убран — Bun-специфичный импорт
+// ломает сборку на Vercel Node-рантайме.
 
 const port = Number(process.env.PORT ?? 3000);
 
