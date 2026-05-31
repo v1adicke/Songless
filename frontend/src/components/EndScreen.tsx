@@ -3,7 +3,6 @@
 import { useRef, useState } from "react";
 import {
   MAX_ATTEMPTS,
-  UNLOCK_SECONDS,
   type Answer,
   type GuessEntry,
 } from "../types.ts";
@@ -25,8 +24,6 @@ const SQUARE: Record<string, string> = {
   empty: "⬜",
 };
 
-// Full clip length in seconds (last value in unlock schedule).
-const FULL_SECONDS = UNLOCK_SECONDS[MAX_ATTEMPTS - 1];
 
 export default function EndScreen({
   won,
