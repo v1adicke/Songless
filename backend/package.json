@@ -4,8 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun run --hot src/index.ts",
-    "start": "bun run src/index.ts"
+  "dev": "bun run --hot src/index.ts",
+  "start": "bun run src/index.ts",
+  "build": "echo 'skip build'"
   },
   "dependencies": {
     "hono": "^4.6.14"
