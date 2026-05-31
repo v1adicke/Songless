@@ -47,6 +47,4 @@ app.route("/game", gameRoutes);
 app.route("/search", searchRoutes);
 
 // Export Vercel-compatible handlers for each HTTP method we use.
-export const GET = handle(app);
-export const POST = handle(app);
-export const OPTIONS = handle(app);
+export default handle(app);
