@@ -6,7 +6,7 @@
   "scripts": {
   "dev": "bun run --hot src/index.ts",
   "start": "bun run src/index.ts",
-  "build": "mkdir -p dist"
+  "build": "mkdir -p dist && echo 'API is running' > dist/index.html"
   },
   "dependencies": {
     "hono": "^4.6.14"
