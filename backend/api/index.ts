@@ -12,7 +12,7 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { handle } from "hono/vercel";
-import gameRoutes from "../src/routes/game";
+import gameRoutes from "../src/routes/game.js";
 import searchRoutes from "../src/routes/search";
 
 export const config = {
