@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["ESNext"],
+    "lib": ["ESNext", "DOM"],
     "module": "CommonJS",
     "moduleResolution": "bundler",
     "target": "ES2022",
@@ -10,7 +10,7 @@
     "noEmit": true,
     "strict": true,
     "skipLibCheck": true,
-    "types": ["bun", "node"],
+    "types": ["node"],
     "noImplicitAny": false,
     "ignoreDeprecations": "5.0"
   }
